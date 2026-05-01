@@ -1,0 +1,212 @@
+Clear
+
+// ==================== UK_LV_Network.dss ====================
+// UK Residential Low Voltage Network Model
+// Realistic UK LV network with 55 customers across 3 feeders
+
+// ==================== VOLTAGE SOURCE ====================
+// 11kV MV source (grid supply point)
+New Circuit.UK_LV_Network basekv=11 pu=1.00 phases=3 bus1=SourceBus
+~ ISC3=10000 ISC1=9500 X1R1=4 X0R0=3
+
+// ==================== DISTRIBUTION TRANSFORMER ====================
+// 500 kVA Dyn11 distribution transformer (typical UK urban)
+New Transformer.MainTX phases=3 windings=2
+~ wdg=1 bus=SourceBus conn=delta kV=11 kVA=500 %r=0.6
+~ wdg=2 bus=LV_Busbar conn=wye kV=0.4 kVA=500 %r=0.6
+~ XHL=4.5 %loadloss=1.1 %noloadloss=0.3
+
+// ==================== LINE CODES ====================
+// Main feeder: 185mm² Al CNE (typical UK)
+New Linecode.Main_185 nphases=3 r1=0.164 r0=0.656 x1=0.083 x0=0.25 
+~ c1=0.24 c0=0.11 units=km normamps=275 emergamps=350
+
+// Service cable: 35mm² Al CNE (house connections)
+New Linecode.Service_35 nphases=3 r1=0.868 r0=3.472 x1=0.083 x0=0.25
+~ c1=0.19 c0=0.09 units=km normamps=100 emergamps=125
+
+// ==================== FEEDER 1 (20 customers) ====================
+New Line.Feeder1_Main Bus1=LV_Busbar.1.2.3.0 Bus2=F1_Bus.1.2.3.0 
+~ Length=0.08 Linecode=Main_185 phases=3 units=km
+
+New Line.F1_Seg1 Bus1=F1_Bus.1.2.3.0 Bus2=F1_Node1.1.2.3.0
+~ Length=0.03 Linecode=Main_185 phases=3
+
+New Line.F1_Seg2 Bus1=F1_Node1.1.2.3.0 Bus2=F1_Node2.1.2.3.0
+~ Length=0.03 Linecode=Main_185 phases=3
+
+New Line.F1_Seg3 Bus1=F1_Node2.1.2.3.0 Bus2=F1_Node3.1.2.3.0
+~ Length=0.03 Linecode=Main_185 phases=3
+
+// Feeder 1 Customers (distributed across phases)
+// Phase A customers (7)
+New Line.Svc_F1_1  Bus1=F1_Bus.1.0     Bus2=Cust_F1_1.1.0  Length=0.025 Linecode=Service_35 phases=1
+New Line.Svc_F1_4  Bus1=F1_Node1.1.0   Bus2=Cust_F1_4.1.0  Length=0.020 Linecode=Service_35 phases=1
+New Line.Svc_F1_7  Bus1=F1_Node1.1.0   Bus2=Cust_F1_7.1.0  Length=0.030 Linecode=Service_35 phases=1
+New Line.Svc_F1_10 Bus1=F1_Node2.1.0   Bus2=Cust_F1_10.1.0 Length=0.022 Linecode=Service_35 phases=1
+New Line.Svc_F1_13 Bus1=F1_Node2.1.0   Bus2=Cust_F1_13.1.0 Length=0.028 Linecode=Service_35 phases=1
+New Line.Svc_F1_16 Bus1=F1_Node3.1.0   Bus2=Cust_F1_16.1.0 Length=0.020 Linecode=Service_35 phases=1
+New Line.Svc_F1_19 Bus1=F1_Node3.1.0   Bus2=Cust_F1_19.1.0 Length=0.025 Linecode=Service_35 phases=1
+
+// Phase B customers (7)
+New Line.Svc_F1_2  Bus1=F1_Bus.2.0     Bus2=Cust_F1_2.2.0  Length=0.024 Linecode=Service_35 phases=1
+New Line.Svc_F1_5  Bus1=F1_Node1.2.0   Bus2=Cust_F1_5.2.0  Length=0.021 Linecode=Service_35 phases=1
+New Line.Svc_F1_8  Bus1=F1_Node1.2.0   Bus2=Cust_F1_8.2.0  Length=0.029 Linecode=Service_35 phases=1
+New Line.Svc_F1_11 Bus1=F1_Node2.2.0   Bus2=Cust_F1_11.2.0 Length=0.023 Linecode=Service_35 phases=1
+New Line.Svc_F1_14 Bus1=F1_Node2.2.0   Bus2=Cust_F1_14.2.0 Length=0.027 Linecode=Service_35 phases=1
+New Line.Svc_F1_17 Bus1=F1_Node3.2.0   Bus2=Cust_F1_17.2.0 Length=0.021 Linecode=Service_35 phases=1
+New Line.Svc_F1_20 Bus1=F1_Node3.2.0   Bus2=Cust_F1_20.2.0 Length=0.026 Linecode=Service_35 phases=1
+
+// Phase C customers (6)
+New Line.Svc_F1_3  Bus1=F1_Bus.3.0     Bus2=Cust_F1_3.3.0  Length=0.023 Linecode=Service_35 phases=1
+New Line.Svc_F1_6  Bus1=F1_Node1.3.0   Bus2=Cust_F1_6.3.0  Length=0.019 Linecode=Service_35 phases=1
+New Line.Svc_F1_9  Bus1=F1_Node1.3.0   Bus2=Cust_F1_9.3.0  Length=0.028 Linecode=Service_35 phases=1
+New Line.Svc_F1_12 Bus1=F1_Node2.3.0   Bus2=Cust_F1_12.3.0 Length=0.024 Linecode=Service_35 phases=1
+New Line.Svc_F1_15 Bus1=F1_Node2.3.0   Bus2=Cust_F1_15.3.0 Length=0.026 Linecode=Service_35 phases=1
+New Line.Svc_F1_18 Bus1=F1_Node3.3.0   Bus2=Cust_F1_18.3.0 Length=0.022 Linecode=Service_35 phases=1
+
+// Feeder 1 Loads (baseline domestic loads)
+New Load.Customer_F1_1  Bus1=Cust_F1_1.1  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_2  Bus1=Cust_F1_2.2  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_3  Bus1=Cust_F1_3.3  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_4  Bus1=Cust_F1_4.1  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_5  Bus1=Cust_F1_5.2  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_6  Bus1=Cust_F1_6.3  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_7  Bus1=Cust_F1_7.1  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_8  Bus1=Cust_F1_8.2  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_9  Bus1=Cust_F1_9.3  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_10 Bus1=Cust_F1_10.1 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_11 Bus1=Cust_F1_11.2 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_12 Bus1=Cust_F1_12.3 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_13 Bus1=Cust_F1_13.1 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_14 Bus1=Cust_F1_14.2 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_15 Bus1=Cust_F1_15.3 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_16 Bus1=Cust_F1_16.1 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_17 Bus1=Cust_F1_17.2 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_18 Bus1=Cust_F1_18.3 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_19 Bus1=Cust_F1_19.1 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F1_20 Bus1=Cust_F1_20.2 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+
+// ==================== FEEDER 2 (18 customers) ====================
+New Line.Feeder2_Main Bus1=LV_Busbar.1.2.3.0 Bus2=F2_Bus.1.2.3.0
+~ Length=0.06 Linecode=Main_185 phases=3
+
+New Line.F2_Seg1 Bus1=F2_Bus.1.2.3.0 Bus2=F2_Node1.1.2.3.0
+~ Length=0.03 Linecode=Main_185 phases=3
+
+New Line.F2_Seg2 Bus1=F2_Node1.1.2.3.0 Bus2=F2_Node2.1.2.3.0
+~ Length=0.03 Linecode=Main_185 phases=3
+
+// Phase A customers (6)
+New Line.Svc_F2_1  Bus1=F2_Bus.1.0     Bus2=Cust_F2_1.1.0  Length=0.024 Linecode=Service_35 phases=1
+New Line.Svc_F2_4  Bus1=F2_Node1.1.0   Bus2=Cust_F2_4.1.0  Length=0.021 Linecode=Service_35 phases=1
+New Line.Svc_F2_7  Bus1=F2_Node1.1.0   Bus2=Cust_F2_7.1.0  Length=0.029 Linecode=Service_35 phases=1
+New Line.Svc_F2_10 Bus1=F2_Node2.1.0   Bus2=Cust_F2_10.1.0 Length=0.023 Linecode=Service_35 phases=1
+New Line.Svc_F2_13 Bus1=F2_Node2.1.0   Bus2=Cust_F2_13.1.0 Length=0.027 Linecode=Service_35 phases=1
+New Line.Svc_F2_16 Bus1=F2_Node2.1.0   Bus2=Cust_F2_16.1.0 Length=0.025 Linecode=Service_35 phases=1
+
+// Phase B customers (6)
+New Line.Svc_F2_2  Bus1=F2_Bus.2.0     Bus2=Cust_F2_2.2.0  Length=0.023 Linecode=Service_35 phases=1
+New Line.Svc_F2_5  Bus1=F2_Node1.2.0   Bus2=Cust_F2_5.2.0  Length=0.020 Linecode=Service_35 phases=1
+New Line.Svc_F2_8  Bus1=F2_Node1.2.0   Bus2=Cust_F2_8.2.0  Length=0.028 Linecode=Service_35 phases=1
+New Line.Svc_F2_11 Bus1=F2_Node2.2.0   Bus2=Cust_F2_11.2.0 Length=0.024 Linecode=Service_35 phases=1
+New Line.Svc_F2_14 Bus1=F2_Node2.2.0   Bus2=Cust_F2_14.2.0 Length=0.026 Linecode=Service_35 phases=1
+New Line.Svc_F2_17 Bus1=F2_Node2.2.0   Bus2=Cust_F2_17.2.0 Length=0.024 Linecode=Service_35 phases=1
+
+// Phase C customers (6)
+New Line.Svc_F2_3  Bus1=F2_Bus.3.0     Bus2=Cust_F2_3.3.0  Length=0.022 Linecode=Service_35 phases=1
+New Line.Svc_F2_6  Bus1=F2_Node1.3.0   Bus2=Cust_F2_6.3.0  Length=0.019 Linecode=Service_35 phases=1
+New Line.Svc_F2_9  Bus1=F2_Node1.3.0   Bus2=Cust_F2_9.3.0  Length=0.027 Linecode=Service_35 phases=1
+New Line.Svc_F2_12 Bus1=F2_Node2.3.0   Bus2=Cust_F2_12.3.0 Length=0.025 Linecode=Service_35 phases=1
+New Line.Svc_F2_15 Bus1=F2_Node2.3.0   Bus2=Cust_F2_15.3.0 Length=0.023 Linecode=Service_35 phases=1
+New Line.Svc_F2_18 Bus1=F2_Node2.3.0   Bus2=Cust_F2_18.3.0 Length=0.026 Linecode=Service_35 phases=1
+
+// Feeder 2 Loads
+New Load.Customer_F2_1  Bus1=Cust_F2_1.1  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_2  Bus1=Cust_F2_2.2  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_3  Bus1=Cust_F2_3.3  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_4  Bus1=Cust_F2_4.1  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_5  Bus1=Cust_F2_5.2  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_6  Bus1=Cust_F2_6.3  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_7  Bus1=Cust_F2_7.1  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_8  Bus1=Cust_F2_8.2  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_9  Bus1=Cust_F2_9.3  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_10 Bus1=Cust_F2_10.1 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_11 Bus1=Cust_F2_11.2 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_12 Bus1=Cust_F2_12.3 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_13 Bus1=Cust_F2_13.1 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_14 Bus1=Cust_F2_14.2 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_15 Bus1=Cust_F2_15.3 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_16 Bus1=Cust_F2_16.1 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_17 Bus1=Cust_F2_17.2 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F2_18 Bus1=Cust_F2_18.3 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+
+// ==================== FEEDER 3 (17 customers) ====================
+New Line.Feeder3_Main Bus1=LV_Busbar.1.2.3.0 Bus2=F3_Bus.1.2.3.0
+~ Length=0.05 Linecode=Main_185 phases=3
+
+New Line.F3_Seg1 Bus1=F3_Bus.1.2.3.0 Bus2=F3_Node1.1.2.3.0
+~ Length=0.03 Linecode=Main_185 phases=3
+
+New Line.F3_Seg2 Bus1=F3_Node1.1.2.3.0 Bus2=F3_Node2.1.2.3.0
+~ Length=0.02 Linecode=Main_185 phases=3
+
+// Phase A customers (6)
+New Line.Svc_F3_1  Bus1=F3_Bus.1.0     Bus2=Cust_F3_1.1.0  Length=0.023 Linecode=Service_35 phases=1
+New Line.Svc_F3_4  Bus1=F3_Node1.1.0   Bus2=Cust_F3_4.1.0  Length=0.020 Linecode=Service_35 phases=1
+New Line.Svc_F3_7  Bus1=F3_Node1.1.0   Bus2=Cust_F3_7.1.0  Length=0.028 Linecode=Service_35 phases=1
+New Line.Svc_F3_10 Bus1=F3_Node2.1.0   Bus2=Cust_F3_10.1.0 Length=0.024 Linecode=Service_35 phases=1
+New Line.Svc_F3_13 Bus1=F3_Node2.1.0   Bus2=Cust_F3_13.1.0 Length=0.026 Linecode=Service_35 phases=1
+New Line.Svc_F3_16 Bus1=F3_Node2.1.0   Bus2=Cust_F3_16.1.0 Length=0.025 Linecode=Service_35 phases=1
+
+// Phase B customers (6)
+New Line.Svc_F3_2  Bus1=F3_Bus.2.0     Bus2=Cust_F3_2.2.0  Length=0.022 Linecode=Service_35 phases=1
+New Line.Svc_F3_5  Bus1=F3_Node1.2.0   Bus2=Cust_F3_5.2.0  Length=0.019 Linecode=Service_35 phases=1
+New Line.Svc_F3_8  Bus1=F3_Node1.2.0   Bus2=Cust_F3_8.2.0  Length=0.027 Linecode=Service_35 phases=1
+New Line.Svc_F3_11 Bus1=F3_Node2.2.0   Bus2=Cust_F3_11.2.0 Length=0.025 Linecode=Service_35 phases=1
+New Line.Svc_F3_14 Bus1=F3_Node2.2.0   Bus2=Cust_F3_14.2.0 Length=0.023 Linecode=Service_35 phases=1
+New Line.Svc_F3_17 Bus1=F3_Node2.2.0   Bus2=Cust_F3_17.2.0 Length=0.026 Linecode=Service_35 phases=1
+
+// Phase C customers (5)
+New Line.Svc_F3_3  Bus1=F3_Bus.3.0     Bus2=Cust_F3_3.3.0  Length=0.021 Linecode=Service_35 phases=1
+New Line.Svc_F3_6  Bus1=F3_Node1.3.0   Bus2=Cust_F3_6.3.0  Length=0.018 Linecode=Service_35 phases=1
+New Line.Svc_F3_9  Bus1=F3_Node1.3.0   Bus2=Cust_F3_9.3.0  Length=0.026 Linecode=Service_35 phases=1
+New Line.Svc_F3_12 Bus1=F3_Node2.3.0   Bus2=Cust_F3_12.3.0 Length=0.024 Linecode=Service_35 phases=1
+New Line.Svc_F3_15 Bus1=F3_Node2.3.0   Bus2=Cust_F3_15.3.0 Length=0.022 Linecode=Service_35 phases=1
+
+// Feeder 3 Loads
+New Load.Customer_F3_1  Bus1=Cust_F3_1.1  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_2  Bus1=Cust_F3_2.2  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_3  Bus1=Cust_F3_3.3  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_4  Bus1=Cust_F3_4.1  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_5  Bus1=Cust_F3_5.2  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_6  Bus1=Cust_F3_6.3  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_7  Bus1=Cust_F3_7.1  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_8  Bus1=Cust_F3_8.2  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_9  Bus1=Cust_F3_9.3  Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_10 Bus1=Cust_F3_10.1 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_11 Bus1=Cust_F3_11.2 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_12 Bus1=Cust_F3_12.3 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_13 Bus1=Cust_F3_13.1 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_14 Bus1=Cust_F3_14.2 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_15 Bus1=Cust_F3_15.3 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_16 Bus1=Cust_F3_16.1 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+New Load.Customer_F3_17 Bus1=Cust_F3_17.2 Phases=1 Conn=Wye Model=1 kV=0.23 kW=0.8 PF=0.95 Vminpu=0.9 Vmaxpu=1.1
+
+// ==================== MONITORS ====================
+New Monitor.Trans_Power Element=Transformer.MainTX Terminal=1 Mode=1 ppolar=no
+New Monitor.Trans_Voltage Element=Transformer.MainTX Terminal=2 Mode=0
+
+// Voltage monitors at critical locations
+New Monitor.Volt_F1_End Element=Load.Customer_F1_20 Terminal=1 Mode=0
+New Monitor.Volt_F2_End Element=Load.Customer_F2_18 Terminal=1 Mode=0
+New Monitor.Volt_F3_End Element=Load.Customer_F3_17 Terminal=1 Mode=0
+
+// ==================== SETTINGS ====================
+Set Voltagebases=[11 0.4]
+Calcvoltagebases
+Set Tolerance=0.0001
+Set Maxiterations=100
+BusCoords buscoords.csv
+
+Solve
