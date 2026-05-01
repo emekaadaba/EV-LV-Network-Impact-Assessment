@@ -19,9 +19,9 @@ The simulation workflow proceeds through three stages:
 5. `RunOpenDSS.m` passes the total load to the `UK_LV_Network.dss` model via the COM interface, solving a power flow at each minute and extracting voltage, loading and loss metrics.
 6. Results are saved to a per-charger output file (e.g. `Results_3kW.mat`).
 
-**Stage 2 (`MergeAndPlot.m`)** merges the three per-charger result files into a single `SimulationResults.mat`, then calls `AnalyseResults.m` to compute hosting capacities and `PlotResults.m` to generate Figures 1 to 12.
+**Stage 2 (`MergeAndPlot.m`)** merges the three per-charger result files into a single `SimulationResults.mat`, then calls `AnalyseResults.m` to compute hosting capacities and `PlotResults.m` to generate 12 figures.
 
-**Stage 3 (`MCConfidenceAnalysis.m`)** reads `SimulationResults.mat` and generates Figures 13 to 16 (Monte Carlo validation).
+**Stage 3 (`MCConfidenceAnalysis.m`)** reads `SimulationResults.mat` and generates 4 figures (Monte Carlo validation).
 
 ## File Descriptions
 
@@ -139,7 +139,7 @@ Adaptive convergence uses the coefficient of variation (CoV) of peak demand. Ite
 - J. Quirós-Tortós, L. F. Ochoa and B. Lees, "A statistical analysis of EV charging behaviour in the UK," *IEEE PES ISGT Latin America*, 2015. ([IEEE Xplore](https://ieeexplore.ieee.org/document/7381196))
 - My Electric Avenue / Electric Nation customer trial data.
 
-**All other MATLAB code in this repository is original work by the student (ID: 11437384).** All submitted software complies with the University of Manchester's regulations on academic integrity.
+**All other MATLAB code in this repository is original work.** All submitted software complies with the University of Manchester's regulations on academic integrity.
 
 ## Licence
 
