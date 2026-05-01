@@ -4,7 +4,6 @@
 
 MATLAB simulation framework assessing the impact of residential EV fast charging (3 kW, 7 kW, 22 kW) on UK low-voltage distribution networks. Couples a stochastic Monte Carlo EV demand model with three-phase unbalanced power flow analysis via OpenDSS.
 
-Developed as part of the Individual 3rd Year Project (EEEN30330), Department of Electrical and Electronic Engineering, The University of Manchester, 2025–2026.
 
 ## System Overview
 
