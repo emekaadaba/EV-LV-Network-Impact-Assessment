@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This repository contains the MATLAB simulation framework developed for the Individual 3rd Year Project (EEEN30330) at the Department of Electrical and Electronic Engineering, University of Manchester, 2025/26. Student ID is 11437384. Project supervisor is Dr. Eduardo Martinez Cesena.
+This repository contains the MATLAB simulation framework developed for assessing the impact of the growing residential fast-charging demand for electric vehicles on the UK low voltage distribution networks.
 
 The software implements a stochastic Monte Carlo simulation that couples a probabilistic electric vehicle (EV) charging demand model with three-phase unbalanced power flow analysis to quantify the impact of residential fast charging (3 kW, 7 kW and 22 kW) on UK low-voltage (LV) distribution networks. It evaluates four network performance indicators, namely voltage compliance (BS EN 50160), transformer thermal loading, cable ampacity utilisation and daily energy losses, across EV penetration levels from 0% to 100%. It also determines network hosting capacity and evaluates a time-delay smart charging mitigation strategy. The framework executes approximately 6,600 power-flow simulations in total and produces 16 publication-quality figures.
 
